@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 // we cann't take risk to save password in plan text
 
 const router = express.Router();
@@ -86,14 +87,12 @@ router.post("/login", async (req, res) => {
 			});
 		}
 
-		// const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-		//   expiresIn: "1d",
-		// });
+		const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d"});
 
 		res.send({
 			success: true,
-			message: "You've successfully logged in!"
-			// token: token,
+			message: "You've successfully logged in!",
+			token: token,
 		});
 	} catch (error) {
 		console.error(error);
